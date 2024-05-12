@@ -2,6 +2,7 @@
 import { type ClassValue, clsx } from "clsx";
 import qs from "query-string";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -193,3 +194,44 @@ export const getTransactionStatus = (date: Date) => {
 
   return date > twoDaysAgo ? "Processing" : "Success";
 };
+
+export const AuthSignUpSchema = (type: SchemaTypes) =>
+  z.object({
+    firstName:
+      type == SchemaTypes.SignIn
+        ? z.string().optional()
+        : z.string().min(2, "First name is required"),
+    lastName:
+      type == SchemaTypes.SignIn
+        ? z.string().optional()
+        : z.string().min(2, "Last name is required"),
+    ssn:
+      type == SchemaTypes.SignIn
+        ? z.string().optional()
+        : z.string().min(2, "SSN is required"),
+    postalCode:
+      type == SchemaTypes.SignIn
+        ? z.string().optional()
+        : z.string().min(3, "Postal code is required"),
+    dob:
+      type == SchemaTypes.SignIn
+        ? z.string().optional()
+        : z.string().min(10, "Date of birth is required"),
+    state:
+      type == SchemaTypes.SignIn
+        ? z.string().optional()
+        : z.string().min(2, "State is required"),
+    address:
+      type == SchemaTypes.SignIn
+        ? z.string().optional()
+        : z.string().min(2, "Address is required"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password is required"),
+  });
+
+export type AuthSignUpType = z.infer<ReturnType<typeof AuthSignUpSchema>>;
+
+export enum SchemaTypes {
+  SignUp = "sign-up",
+  SignIn = "sign-in",
+}

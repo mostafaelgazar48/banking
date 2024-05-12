@@ -8,14 +8,14 @@ declare type SearchParamProps = {
 // ========================================
 
 declare type SignUpParams = {
-  firstName: string;
-  lastName: string;
-  address1: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  dateOfBirth: string;
-  ssn: string;
+  firstName?: string;
+  lastName?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  dob?: string;
+  ssn?: string;
   email: string;
   password: string;
 };
@@ -325,4 +325,8 @@ declare interface getBankProps {
 
 declare interface getBankByAccountIdProps {
   accountId: string;
+}
+
+declare interface schemaProps {
+  type: "sign-in" | "sign-up";
 }
